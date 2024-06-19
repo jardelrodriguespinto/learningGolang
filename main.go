@@ -3,22 +3,40 @@ package main
 import (
 	"errors"
 	"fmt"
-	"unicode/utf8"
+	"reflect"
+	"strconv"
 )
 
 func main() {
-	fmt.Println(addTwoNums(10, 50))
-	myStr := "teste"
 
-	var err error = errors.New("Deu ruim")
+	arr := []int{20, 5, 1, 5, 2}
+	bubbleSort(arr)
+	mapsInGo()
+	iterandoSobreMap()
+}
 
-	if myStr != "teste" {
-		fmt.Println(utf8.RuneCountInString(myStr))
-	} else {
-		fmt.Println(err)
+func testandoArrays() {
+
+	arr := []int{54, 84, 55}
+
+	novaLista := arr[:3]
+
+	fmt.Println(novaLista)
+
+}
+
+func bubbleSort(arr []int) {
+	for i := 0; i < len(arr); i++ {
+		for j := i + 1; j < len(arr); j++ {
+			if arr[j] < arr[i] {
+				temp := arr[i]
+				arr[i] = arr[j]
+				arr[j] = temp
+			}
+		}
 	}
-	playingWithMaps()
 
+	fmt.Println(arr)
 }
 
 func playingWithArrays() {
@@ -60,4 +78,69 @@ func playingWithMaps() {
 	for key, value := range person {
 		fmt.Printf("%v is %v years old \n", key, value)
 	}
+}
+
+func exemplo() (int, error) {
+	numero := 15
+	erro := errors.New("teste")
+	return numero, erro
+}
+
+func playingWithVariables() (int, reflect.Type) {
+	var numero int = 32
+	numero2 := 15
+	return numero + numero2, reflect.TypeOf(numero)
+}
+
+func playingWithConstants() string {
+	const text string = "teste"
+	//text = "10"
+	return text
+}
+
+func playingWithWhileAndForLoop() {
+	arr := []int{1, 2, 3, 80}
+
+	i := 0
+	tamanho := len(arr)
+
+	for i < tamanho {
+		fmt.Println(arr[i])
+		i++
+	}
+
+}
+
+func mapsInGo() {
+	myMap := make(map[string]int)
+	myList := make([]int, 1)
+	myList = append(myList, 12)
+
+	myMap["Jo"] = 10
+	myMap["as"] = 10
+
+	valor, ok := myMap["teste"]
+
+	if ok {
+		fmt.Println(valor)
+	} else {
+		fmt.Println("valor não existe")
+	}
+
+	for i := 0; i < len(myList); i++ {
+		fmt.Println(myList[i])
+	}
+
+}
+
+func iterandoSobreMap() {
+	pessoa := make(map[string]int)
+
+	pessoa["John"] = 45
+	pessoa["Mary"] = 16
+
+	for chave, valor := range pessoa {
+		fmt.Println(chave + " tem " + strconv.Itoa(valor) + " anos de idade")
+	}
+
 }
