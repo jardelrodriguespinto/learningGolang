@@ -9,10 +9,7 @@ import (
 
 func main() {
 
-	arr := []int{20, 5, 1, 5, 2}
-	bubbleSort(arr)
-	mapsInGo()
-	iterandoSobreMap()
+	exerciseCourse2()
 }
 
 func testandoArrays() {
@@ -25,7 +22,7 @@ func testandoArrays() {
 
 }
 
-func bubbleSort(arr []int) {
+func bubbleSort(arr []int) []int {
 	for i := 0; i < len(arr); i++ {
 		for j := i + 1; j < len(arr); j++ {
 			if arr[j] < arr[i] {
@@ -36,7 +33,7 @@ func bubbleSort(arr []int) {
 		}
 	}
 
-	fmt.Println(arr)
+	return arr
 }
 
 func playingWithArrays() {
@@ -143,4 +140,47 @@ func iterandoSobreMap() {
 		fmt.Println(chave + " tem " + strconv.Itoa(valor) + " anos de idade")
 	}
 
+}
+
+func exerciseCourse() {
+	myArr := make([]int, 2)
+	myArr[0] = 15
+	myArr[1] = 10
+
+	count := 0
+
+	for i := 0; i < len(myArr); i++ {
+		count += myArr[i]
+	}
+
+	fmt.Println(count)
+}
+
+func exerciseCourse2() {
+	myArr := []int{2, 8, 3, 10, 5, 4, 7, 9, 1}
+
+	newArr := bubbleSort(myArr)
+
+	result := sumAll(newArr[:5]) + sumAll(newArr[5:])
+
+	fmt.Println(result)
+}
+
+func sumAll(arr []int) int {
+	count := 0
+
+	for i := 0; i < len(arr); i++ {
+		count += arr[i]
+	}
+
+	return count
+}
+
+func calculadora(num1 int, num2 int) (int, int, int, int) {
+	soma := num1 + num2
+	subtracao := num1 - num2
+	divisao := num1 / num2
+	multiplicao := num1 * num2
+
+	return soma, subtracao, divisao, multiplicao
 }
