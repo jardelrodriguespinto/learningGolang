@@ -1,186 +1,146 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"reflect"
 	"strconv"
+	"sync"
+	"time"
 )
 
 func main() {
 
-	exerciseCourse2()
 }
 
-func testandoArrays() {
+func leaningAboutChannels() {
+	channel := make(chan int)
+	go setList(channel)
 
-	arr := []int{54, 84, 55}
+	//	valor := <- channel
 
-	novaLista := arr[:3]
-
-	fmt.Println(novaLista)
-
-}
-
-func bubbleSort(arr []int) []int {
-	for i := 0; i < len(arr); i++ {
-		for j := i + 1; j < len(arr); j++ {
-			if arr[j] < arr[i] {
-				temp := arr[i]
-				arr[i] = arr[j]
-				arr[j] = temp
-			}
-		}
+	for v := range channel {
+		fmt.Println("recebendo: ", v)
 	}
 
-	return arr
 }
 
-func playingWithArrays() {
-	intArr := [3]int{1, 2, 3}
-	for i := 0; i < len(intArr); i++ {
-		fmt.Println(intArr[i])
+func setList(channel chan<- int) {
+	for i := 0; i < 100; i++ {
+		channel <- i
+		fmt.Println("enviando: ", i)
 	}
+	close(channel)
+
 }
 
-func addTwoNums(x, y int) int {
-	return x + y
-}
-
-func exploingTypes() int {
-	var intNum int
-	intNum = 10
-	return intNum
-}
-
-type gasEngine struct {
-	mpg     int
-	gallons int
-}
-
-func playingWithSlices() {
-	intSlice := [...]int{45, 22, 13, 0}
-
-	for i := 0; i < len(intSlice); i++ {
-		if intSlice[i]%2 == 0 {
-			intSlice[i] = intSlice[i] + 10
-			fmt.Println(intSlice[i])
-		}
-	}
-}
-
-func playingWithMaps() {
-	person := map[string]int{"John": 35, "Paul": 42}
-
-	for key, value := range person {
-		fmt.Printf("%v is %v years old \n", key, value)
-	}
-}
-
-func exemplo() (int, error) {
-	numero := 15
-	erro := errors.New("teste")
-	return numero, erro
-}
-
-func playingWithVariables() (int, reflect.Type) {
-	var numero int = 32
-	numero2 := 15
-	return numero + numero2, reflect.TypeOf(numero)
-}
-
-func playingWithConstants() string {
-	const text string = "teste"
-	//text = "10"
-	return text
-}
-
-func playingWithWhileAndForLoop() {
-	arr := []int{1, 2, 3, 80}
+func mutext() {
+	var m sync.Mutex
 
 	i := 0
-	tamanho := len(arr)
+	for x := 0; x < 10000; x++ {
+		go func() {
+			m.Lock()
+			i++
+			m.Unlock()
+		}()
 
-	for i < tamanho {
-		fmt.Println(arr[i])
-		i++
 	}
+
+	time.Sleep(time.Second * 2)
+	fmt.Println(i)
 
 }
 
-func mapsInGo() {
-	myMap := make(map[string]int)
-	myList := make([]int, 1)
-	myList = append(myList, 12)
+func ChangeNumber(i *int, newNumber int) {
+	*i = newNumber
+}
 
-	myMap["Jo"] = 10
-	myMap["as"] = 10
+func awaitGroup() {
+	var wg sync.WaitGroup
+	wg.Add(3)
+	go CallDatabase(&wg)
+	go CallApi(&wg)
+	go ProcessInternal(&wg)
 
-	valor, ok := myMap["teste"]
-
-	if ok {
-		fmt.Println(valor)
-	} else {
-		fmt.Println("valor não existe")
-	}
-
-	for i := 0; i < len(myList); i++ {
-		fmt.Println(myList[i])
-	}
+	wg.Wait()
 
 }
 
-func iterandoSobreMap() {
-	pessoa := make(map[string]int)
-
-	pessoa["John"] = 45
-	pessoa["Mary"] = 16
-
-	for chave, valor := range pessoa {
-		fmt.Println(chave + " tem " + strconv.Itoa(valor) + " anos de idade")
+func gorotines() {
+	for i := 0; i < 100; i++ {
+		go showMessage(strconv.Itoa(i))
 	}
 
+	time.Sleep(time.Millisecond * 2)
+
 }
 
-func exerciseCourse() {
-	myArr := make([]int, 2)
-	myArr[0] = 15
-	myArr[1] = 10
-
-	count := 0
-
-	for i := 0; i < len(myArr); i++ {
-		count += myArr[i]
-	}
-
-	fmt.Println(count)
+func CallDatabase(wg *sync.WaitGroup) {
+	time.Sleep(1 * time.Second)
+	fmt.Println("Calling the database")
+	wg.Done()
 }
 
-func exerciseCourse2() {
-	myArr := []int{2, 8, 3, 10, 5, 4, 7, 9, 1}
-
-	newArr := bubbleSort(myArr)
-
-	result := sumAll(newArr[:5]) + sumAll(newArr[5:])
-
-	fmt.Println(result)
+func CallApi(wg *sync.WaitGroup) {
+	time.Sleep(2 * time.Second)
+	fmt.Println("Calling the api")
+	wg.Done()
 }
 
-func sumAll(arr []int) int {
-	count := 0
+func ProcessInternal(wg *sync.WaitGroup) {
+	time.Sleep(1 * time.Second)
+	fmt.Println("Calling the internal process")
+	wg.Done()
+}
+
+func showMessage(message string) {
+	fmt.Println(message)
+}
+
+func playingWithGenerics() {
+	arrInt := []int{1, 2, 3, 4, 5, 6}
+	arrString := []string{"a", "b", "c", "d", "e", "f"}
+
+	fmt.Println(reverseArr(arrInt))
+	fmt.Println(reverseArr(arrString))
+}
+
+type constaint interface {
+	int | string
+}
+
+func binarySearch(arr []int, target int) int {
+
+	start := arr[0]
+	end := len(arr) - 1
 
 	for i := 0; i < len(arr); i++ {
-		count += arr[i]
+		mid := start + end/2
+
+		if arr[mid] == target {
+			return i
+		} else if arr[mid] < target {
+			mid = start + 1
+		} else {
+			mid = end - 1
+		}
+
 	}
 
-	return count
+	return -1
 }
 
-func calculadora(num1 int, num2 int) (int, int, int, int) {
-	soma := num1 + num2
-	subtracao := num1 - num2
-	divisao := num1 / num2
-	multiplicao := num1 * num2
+func reverseArr[T constaint](slice []T) []T {
 
-	return soma, subtracao, divisao, multiplicao
+	newArr := make([]T, len(slice))
+
+	tamanhoNewArr := 0
+
+	for i := len(slice) - 1; i >= 0; i-- {
+		if tamanhoNewArr < len(newArr) {
+			newArr[i] = slice[tamanhoNewArr]
+			tamanhoNewArr++
+		}
+	}
+
+	return newArr
 }
